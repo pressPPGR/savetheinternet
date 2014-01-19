@@ -25,16 +25,35 @@ function nextmep() {
   }
  }
 
+try {
+  if (typeof $ !== 'undefined') {
+    $(function () {
+     $('span.mailcheat').each(
+       function (i, el) {         
+         if ($(el).attr('locip')) {
+             var host = $(el).attr('domip') || window.location.host
+             var mail = $(el).attr('locip') + '@' + host;
+           $(el).html('<a href="mailto:' + mail + '">' + ($(el).attr('inner') || mail || el.innerText || 'mail') + '</a>');
+         } else {
+           $(el).html(el.innerText.replace(/^(\w+\.\w+) \\at\\ (savetheinternet.eu)/, '<a href="mailto:$1@$2">$1@$2</a>'));
+         }
+      });
+    });
+  }
+} catch (e) {
+  console.error('error in mailcheat', e);
+}
+  
+try {
+  if (typeof _paq !== 'undefined' && typeof $ !== 'undefined') {
+    $('a.actiontab_phone').on('click', function () {_paq.push(['trackGoal', 2]);});
+    $('a.actiontab_mail').on('click', function () {_paq.push(['trackGoal', 1]);});
+    $('#shareside a,.hmid a').on('click', function () { _paq.push(['trackGoal', 3]); });
+  }
+} catch (e) {
+  console.error('error in piwik goal tracking', e);
+}
 
-$(function () {
- $('span.mailcheat').each(
-   function (i, el) {         
-     if ($(el).attr('locip')) {
-         var host = $(el).attr('domip') || window.location.host
-         var mail = $(el).attr('locip') + '@' + host;
-       $(el).html('<a href="mailto:' + mail + '">' + ($(el).attr('inner') || mail || el.innerText || 'mail') + '</a>');
-     } else {
-       $(el).html(el.innerText.replace(/^(\w+\.\w+) \\at\\ (okfn.at)/, '<a href="mailto:$1@$2">$1@$2</a>'));
-     }
-  });
-});
+//  typeof _paq !== 'undefined' && 
+//<a href="#" onclick="javascript:_paq.push(['trackPageView', 'Menu/Freedom']);">Freedom page</a>
+
